@@ -1,10 +1,5 @@
-# LinkedIn Post — Nyaya Sahayak
+# Nyaya Sahayak
 
----
-
-**🚀 I Built a Multi-Agent AI Platform for Indian Law Enforcement — Here's the Full Technical Breakdown**
-
-For the past few weeks, I've been building something I'm genuinely proud of: **Nyaya Sahayak** — an Agentic AI co-pilot designed to help Indian police officers navigate the massive transition from the legacy IPC to the new Bharatiya Nyaya Sanhita (BNS).
 
 But I didn't want to build another ChatGPT wrapper. When it comes to law, a hallucinated penal code is unacceptable. So I engineered a system where deterministic rules override the LLM whenever it gets creative with the law.
 
