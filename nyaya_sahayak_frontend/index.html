@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyaya Sahayak - AI Justice Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css?v=4.0">
+</head>
+<body>
+    <div class="app-container">
+        
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="ph-fill ph-scales"></i>
+                <span>Nyaya Sahayak</span>
+            </div>
+            <nav>
+                <a href="#" class="active" id="nav-new-fir"><i class="ph ph-microphone-stage"></i> New FIR</a>
+                <a href="#" id="nav-active-cases"><i class="ph ph-folders"></i> Active Cases</a>
+                <a href="#" id="nav-witness-analyzer"><i class="ph ph-waveform"></i> Witness Analyzer</a>
+                <a href="#" id="nav-search-laws"><i class="ph ph-magnifying-glass"></i> Search Laws</a>
+                <a href="#"><i class="ph ph-gear"></i> Settings</a>
+            </nav>
+        </aside>
+
+        
+        <main class="main-content hidden" id="active-cases-view">
+            <header class="topbar">
+                <div>
+                    <h1>Active Cases</h1>
+                    <p class="subtitle">Manage saved FIR drafts and case files</p>
+                </div>
+            </header>
+            <div class="active-cases-grid" id="active-cases-grid">
+                
+            </div>
+        </main>
+
+        
+        <main class="main-content hidden" id="search-laws-view">
+            <header class="topbar">
+                <div>
+                    <h1>Search Bharatiya Nyaya Sanhita (BNS)</h1>
+                    <p class="subtitle">Search laws using natural language</p>
+                </div>
+            </header>
+            
+            <div class="search-container glass-panel" style="padding: 24px; margin-bottom: 24px; border-radius: 12px;">
+                <div style="display: flex; gap: 12px;">
+                    <input type="text" id="search-laws-input" placeholder="e.g. What is the punishment for cheating or fraud?" style="flex: 1; padding: 16px; border-radius: 8px; border: 1px solid var(--border-glass); background: rgba(0,0,0,0.2); color: white; font-size: 1.1rem; font-family: 'Outfit';">
+                    <button id="btn-search-laws" class="primary-btn" style="padding: 0 32px;"><i class="ph ph-magnifying-glass"></i> Search</button>
+                </div>
+                <p id="search-laws-status" style="margin-top: 12px; color: var(--text-secondary); font-size: 0.9rem;"></p>
+            </div>
+            
+            <div id="search-laws-results" class="sections-list" style="overflow-y: auto; flex: 1; padding-bottom: 40px;">
+                
+            <div id="search-laws-results" class="sections-list" style="overflow-y: auto; flex: 1; padding-bottom: 40px;">
+                
+            </div>
+        </main>
+
+        
+        <main class="main-content hidden" id="case-details-view">
+            <header class="topbar">
+                <div>
+                    <h1 id="cd-title">Case Details</h1>
+                    <p class="subtitle" id="cd-subtitle">Review case facts and generate court documents</p>
+                </div>
+                <div class="status-badge" style="background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">
+                    <span class="dot" style="background: #10b981;"></span> Active Case
+                </div>
+            </header>
+
+            <div class="location-card glass-panel" style="margin-top: 24px;">
+                <h3><i class="ph ph-folder"></i> Evidence Management</h3>
+                <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">Add evidence collected during the investigation to automatically draft the final charge-sheet.</p>
+                
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label>Witness Statements (Sec 180 BNSS)</label>
+                    <textarea id="cd-witness" placeholder="Paste witness statements here..." style="width: 100%; min-height: 100px; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-glass); border-radius: 8px; color: white; font-family: 'Outfit'; resize: vertical;"></textarea>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 24px;">
+                    <label>Forensic / Medical Reports</label>
+                    <textarea id="cd-forensics" placeholder="Paste findings from FSL or medical examinations..." style="width: 100%; min-height: 100px; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-glass); border-radius: 8px; color: white; font-family: 'Outfit'; resize: vertical;"></textarea>
+                </div>
+                
+                <button id="btn-gen-chargesheet" class="primary-btn w-full">
+                    <i class="ph-fill ph-file-text"></i> Generate Charge-Sheet & Case Diary
+                </button>
+            </div>
+            
+            <div id="cs-loading" class="hidden" style="margin-top: 32px; text-align: center;">
+                <div class="pulse-ring" style="width: 40px; height: 40px; border-color: var(--gold); margin: 0 auto;"></div>
+                <p style="color: var(--gold); margin-top: 16px;">AI is synthesizing evidence and drafting legal documents...</p>
+            </div>
+
+            
+            <div id="cs-output" class="hidden" style="margin-top: 32px; display: flex; flex-direction: column; gap: 24px; padding-bottom: 60px;">
+                
+                <div class="glass-panel" style="padding: 24px; border-radius: 16px; border-left: 4px solid #3b82f6;">
+                    <h3 style="color: #3b82f6; margin-bottom: 16px;"><i class="ph ph-calendar-blank"></i> Chronological Case Diary</h3>
+                    <div id="cs-diary-content" style="color: var(--text-primary); line-height: 1.6; font-size: 14px;"></div>
+                </div>
+
+                <div class="glass-panel" style="padding: 24px; border-radius: 16px; border-left: 4px solid var(--gold);">
+                    <h3 style="color: var(--gold); margin-bottom: 16px;"><i class="ph ph-scales"></i> Evidence Matrix</h3>
+                    <div style="overflow-x: auto;">
+                        <table id="cs-matrix-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--border-glass);">
+                                    <th style="padding: 12px; color: var(--text-secondary);">Accused</th>
+                                    <th style="padding: 12px; color: var(--text-secondary);">Evidence Type</th>
+                                    <th style="padding: 12px; color: var(--text-secondary);">Description</th>
+                                    <th style="padding: 12px; color: var(--text-secondary);">Strength</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cs-matrix-body" style="color: var(--text-primary);">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="glass-panel" style="padding: 24px; border-radius: 16px;">
+                    <h3 style="color: var(--text-primary); margin-bottom: 16px;"><i class="ph ph-file-doc"></i> Final Charge-Sheet (Sec 193 BNSS)</h3>
+                    <div id="cs-draft-content" style="background: rgba(0,0,0,0.5); padding: 24px; border-radius: 8px; border: 1px solid var(--border-glass); color: #e2e8f0; font-family: monospace; white-space: pre-wrap; line-height: 1.6;"></div>
+                </div>
+            </div>
+
+        </main>
+
+        
+        <main class="main-content hidden" id="witness-analyzer-view">
+            <header class="topbar">
+                <div>
+                    <h1><i class="ph ph-waveform"></i> Multi-Lingual Witness Analyzer</h1>
+                    <p class="subtitle">Record or upload witness statements for AI-powered transcription, translation & analysis</p>
+                </div>
+            </header>
+
+            
+            <div class="location-card glass-panel" style="margin-top: 24px;">
+                <h3><i class="ph ph-microphone"></i> Record or Upload Audio</h3>
+                <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 20px;">Record a witness statement in any Indian language (Hindi, Marathi, Tamil, etc.) or upload an existing audio file.</p>
+                
+                <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 24px; background: rgba(0,0,0,0.3); border-radius: 12px; border: 1px solid var(--border-glass);">
+                        <div class="witness-mic-container" id="witness-mic-btn" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #ef4444, #dc2626); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s;">
+                            <i class="ph-fill ph-microphone" style="font-size: 24px; color: white;"></i>
+                        </div>
+                        <span id="witness-rec-status" style="color: var(--text-secondary); font-size: 13px;">Tap to Record</span>
+                        <span id="witness-rec-timer" style="color: var(--gold); font-size: 18px; font-weight: 600; display: none;">00:00</span>
+                        <div id="witness-voice-controls" class="hidden" style="display: flex; gap: 8px; width: 100%; justify-content: center; margin-top: 8px;">
+                            <button id="wa-btn-pause" class="secondary-btn" style="flex: 1; padding: 8px 12px; font-size: 13px; font-weight: 600;"><i class="ph ph-pause"></i> Pause</button>
+                            <button id="wa-btn-resume" class="secondary-btn hidden" style="flex: 1; padding: 8px 12px; font-size: 13px; font-weight: 600; background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981;"><i class="ph ph-play"></i> Resume</button>
+                            <button id="wa-btn-stop" class="primary-btn" style="flex: 1; padding: 8px 12px; font-size: 13px; font-weight: 600; background: linear-gradient(135deg, #ef4444, #dc2626); border-color: #ef4444;"><i class="ph-fill ph-stop-circle"></i> Stop</button>
+                        </div>
+                    </div>
+                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 24px; background: rgba(0,0,0,0.3); border-radius: 12px; border: 1px dashed var(--border-glass); cursor: pointer;" id="witness-upload-zone">
+                        <i class="ph ph-upload-simple" style="font-size: 32px; color: var(--text-secondary);"></i>
+                        <span style="color: var(--text-secondary); font-size: 13px;">Drop audio file or click to upload</span>
+                        <span style="color: var(--text-secondary); font-size: 11px;">.wav, .mp3, .m4a, .webm</span>
+                        <input type="file" id="witness-file-input" accept="audio/*" style="display: none;">
+                    </div>
+                </div>
+
+                <div id="witness-audio-preview" class="hidden" style="margin-bottom: 16px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                    <audio id="witness-audio-player" controls style="width: 100%;"></audio>
+                    <p id="witness-file-name" style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;"></p>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label>Previous Statement (for contradiction detection - optional)</label>
+                    <textarea id="witness-prev-statement" placeholder="Paste a previous statement from this witness to automatically detect contradictions..." style="width: 100%; min-height: 80px; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-glass); border-radius: 8px; color: white; font-family: 'Outfit'; resize: vertical;"></textarea>
+                </div>
+
+                <button id="btn-analyze-witness" class="primary-btn w-full" disabled>
+                    <i class="ph-fill ph-brain"></i> Analyze with AI
+                </button>
+            </div>
+
+            
+            <div id="wa-loading" class="hidden" style="margin-top: 32px; text-align: center;">
+                <div style="width: 48px; height: 48px; border: 3px solid var(--border-glass); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                <p id="wa-loading-text" style="color: var(--gold); margin-top: 16px;">Whisper is transcribing the audio locally...</p>
+            </div>
+
+            
+            <div id="wa-results" class="hidden" style="margin-top: 32px; display: flex; flex-direction: column; gap: 24px; padding-bottom: 60px;">
+                
+                
+                <div class="glass-panel" style="padding: 24px; border-radius: 16px; border-left: 4px solid #8b5cf6;">
+                    <h3 style="color: #8b5cf6; margin-bottom: 8px;"><i class="ph ph-translate"></i> Original Transcription</h3>
+                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">Detected Language: <strong id="wa-lang" style="color: var(--gold);">—</strong></p>
+                    <div id="wa-original" style="background: rgba(0,0,0,0.4); padding: 16px; border-radius: 8px; color: #e2e8f0; line-height: 1.6; font-size: 15px;"></div>
+                </div>
+
+                
+                <div class="glass-panel" style="padding: 24px; border-radius: 16px; border-left: 4px solid #3b82f6;">
+                    <h3 style="color: #3b82f6; margin-bottom: 12px;"><i class="ph ph-file-text"></i> Formal Legal Translation (English)</h3>
+                    <div id="wa-translation" style="background: rgba(0,0,0,0.4); padding: 16px; border-radius: 8px; color: #e2e8f0; line-height: 1.6; font-size: 14px; font-family: monospace;"></div>
+                </div>
+
+                
+                <div class="glass-panel" style="padding: 24px; border-radius: 16px; border-left: 4px solid var(--gold);">
+                    <h3 style="color: var(--gold); margin-bottom: 12px;"><i class="ph ph-list-magnifying-glass"></i> Extracted Key Facts</h3>
+                    <div id="wa-facts" class="facts-grid"></div>
+                </div>
+
+                
+                <div class="glass-panel" style="padding: 24px; border-radius: 16px; border-left: 4px solid #ef4444;">
+                    <h3 style="color: #ef4444; margin-bottom: 16px;"><i class="ph ph-heartbeat"></i> Voice Stress Analysis</h3>
+                    <div id="wa-stress" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;"></div>
+                    <div id="wa-stress-alert" class="hidden" style="margin-top: 16px; padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600;"></div>
+                </div>
+
+                
+                <div id="wa-questions-panel" class="hidden glass-panel" style="padding: 24px; border-radius: 16px; border-left: 4px solid #06b6d4;">
+                    <h3 style="color: #06b6d4; margin-bottom: 4px;"><i class="ph ph-detective"></i> AI Interrogation Assistant</h3>
+                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;">Agentic AI analyzed gaps in the statement and generated strategic follow-up questions using Chain-of-Thought reasoning.</p>
+                    <div id="wa-questions-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
+                </div>
+
+                
+                <div id="wa-contradictions-panel" class="hidden glass-panel" style="padding: 24px; border-radius: 16px; border-left: 4px solid #f59e0b;">
+                    <h3 style="color: #f59e0b; margin-bottom: 16px;"><i class="ph ph-warning-diamond"></i> Contradiction Detection (vs Previous Statement)</h3>
+                    <div style="overflow-x: auto;">
+                        <table id="wa-contradictions-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--border-glass);">
+                                    <th style="padding: 12px; color: var(--text-secondary);">Parameter</th>
+                                    <th style="padding: 12px; color: var(--text-secondary);">Previous Statement</th>
+                                    <th style="padding: 12px; color: var(--text-secondary);">Current Statement</th>
+                                    <th style="padding: 12px; color: var(--text-secondary);">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="wa-contradictions-body" style="color: var(--text-primary);"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        
+        <main class="main-content" id="new-fir-view">
+            <header class="topbar">
+                <div>
+                    <h1>Incident Dictation</h1>
+                    <p class="subtitle">Record complainant statement in regional language</p>
+                </div>
+                <div class="status-badge">
+                    <span class="dot"></span> System Ready
+                </div>
+            </header>
+
+            
+            <div class="location-card glass-panel">
+                <h3>Jurisdiction Details</h3>
+                <div class="location-grid">
+                    <div class="form-group">
+                        <label>State / UT</label>
+                        <select id="state-select">
+                            <option value="">Select State</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>District</label>
+                        <select id="district-select" disabled>
+                            <option value="">Select District</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Police Station</label>
+                        <select id="station-select" disabled>
+                            <option value="">Select Police Station</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dictation-card glass-panel">
+                <div class="mic-container" id="mic-btn">
+                    <div class="pulse-ring"></div>
+                    <i class="ph-fill ph-microphone"></i>
+                </div>
+                <h3 id="dictation-status">Tap mic to start real voice dictation (regional or English)</h3>
+                
+                <div id="voice-controls" class="hidden" style="margin-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 16px; background: rgba(0,0,0,0.5); padding: 20px 24px; border-radius: 16px; border: 1px solid var(--border-glass); width: 100%; max-width: 550px; z-index: 20;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span id="rec-indicator-dot" style="width: 12px; height: 12px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 10px #ef4444;"></span>
+                        <span id="rec-status-text" style="color: #ffffff; font-weight: 600; font-size: 1.1rem;">Recording Voice...</span>
+                        <span id="rec-time-display" style="color: var(--gold); font-family: monospace; font-weight: 700; font-size: 1.25rem; margin-left: 8px;">00:00</span>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; width: 100%; justify-content: center;">
+                        <button id="btn-pause-rec" class="secondary-btn" style="flex: 1; padding: 12px; font-weight: 600;"><i class="ph ph-pause"></i> Pause</button>
+                        <button id="btn-resume-rec" class="secondary-btn hidden" style="flex: 1; padding: 12px; background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981; font-weight: 600;"><i class="ph ph-play"></i> Resume</button>
+                        <button id="btn-stop-rec" class="primary-btn" style="flex: 1.5; padding: 12px; background: linear-gradient(135deg, #ef4444, #dc2626); border-color: #ef4444; font-weight: 600;"><i class="ph-fill ph-stop-circle"></i> Stop & Transcribe</button>
+                    </div>
+                    
+                    <div id="rec-live-preview-container" style="width: 100%; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); min-height: 44px; max-height: 120px; overflow-y: auto;">
+                        <p id="rec-live-preview" style="font-size: 0.95rem; color: #cbd5e1; font-style: italic; margin: 0; text-align: left;">Listening for speech...</p>
+                    </div>
+                </div>
+
+                <div class="manual-input-container" id="manual-input-section">
+                    <div class="divider"><span>OR</span></div>
+                    <textarea id="manual-incident-input" placeholder="Manually type the incident details here to test the REAL backend API..." rows="4"></textarea>
+                    <button id="submit-text-btn" class="primary-btn w-full mt-4"><i class="ph-fill ph-paper-plane-right"></i> Process with AI</button>
+                </div>
+
+                <div class="transcript-box hidden" id="transcript-box">
+                    <div class="speaker-tag">Incident Narrative</div>
+                    <p id="live-transcript" class="typing-effect"></p>
+                </div>
+            </div>
+        </main>
+
+        
+        <aside class="ai-panel glass-panel">
+            <div class="panel-header">
+                <h2><i class="ph-fill ph-brain"></i> AI Investigator</h2>
+                <div class="progress-bar-container hidden" id="ai-progress-container">
+                    <div class="progress-bar" id="ai-progress"></div>
+                </div>
+            </div>
+
+            <div class="panel-content">
+                
+                <div class="ai-step hidden" id="step-extraction">
+                    <h3><i class="ph ph-list-magnifying-glass"></i> Extracted Facts</h3>
+                    <div class="facts-grid" id="facts-container">
+                        
+                    </div>
+                </div>
+
+                
+                <div class="ai-step hidden" id="step-sections">
+                    <h3><i class="ph ph-books"></i> Suggested BNS Sections</h3>
+                    <div class="sections-list" id="sections-container">
+                        
+                    </div>
+                </div>
+
+                
+                <div class="ai-step hidden" id="step-fir">
+                    <div class="fir-alert danger">
+                        <i class="ph-fill ph-warning-circle"></i>
+                        <span>Cognizable Offense Detected. Immediate FIR registration required.</span>
+                    </div>
+                    <h3><i class="ph ph-file-text"></i> Draft FIR (Sec 173 BNSS)</h3>
+                    <div class="fir-draft" id="fir-draft-content">
+                        
+                    </div>
+                    
+                    <div class="fir-actions-grid">
+                        <button id="btn-edit-fir" class="secondary-btn"><i class="ph ph-pencil-simple"></i> Edit Draft</button>
+                        <button id="btn-download-pdf" class="secondary-btn"><i class="ph ph-download-simple"></i> PDF</button>
+                        <button id="btn-discard-case" class="danger-btn"><i class="ph ph-trash"></i> Discard</button>
+                        <button id="btn-save-case" class="primary-btn"><i class="ph ph-floppy-disk"></i> Save Case</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    
+    <button id="chat-fab" class="chat-fab">
+        <i class="ph ph-chat-teardrop-text"></i>
+    </button>
+    
+    <div id="chat-panel" class="chat-panel glass-panel hidden">
+        <div class="chat-header">
+            <h3><i class="ph ph-robot"></i> AI Legal Assistant</h3>
+            <button id="chat-close-btn" class="close-btn"><i class="ph ph-x"></i></button>
+        </div>
+        <div class="chat-body" id="chat-messages">
+            <div class="message ai-message">
+                <div class="message-content">
+                    Namaste Officer! I am your AI Legal Assistant. Ask me anything about the Bharatiya Nyaya Sanhita (BNS).
+                </div>
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="Ask a legal question..." autocomplete="off" />
+            <button id="chat-send-btn" class="primary-btn" style="padding: 10px; border-radius: 50%;"><i class="ph ph-paper-plane-right"></i></button>
+        </div>
+    </div>
+
+    
+    <div id="section-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2 id="modal-title">Section Title</h2>
+                <button id="modal-close-btn" class="close-btn"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-full-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="locations.js"></script>
+    <script src="script.js?v=6.0"></script>
+</body>
+</html>
