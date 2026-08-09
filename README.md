@@ -54,25 +54,22 @@ After the investigation, the system generates a prosecution-ready Charge-Sheet (
 
 ---
 
-**🛡️ Under the Hood — Engineering Resilience**
-
-🔹 **3-Tier LLM Fallback Chain:** Groq Llama 3.3 70B → Groq Llama 3.1 8B → Google Gemini 2.0 Flash → Deterministic local fallback. If every API is down, the Crime Pattern Engine + Validator still produces accurate output.
-
-🔹 **Hybrid Symbolic-Connectionist Architecture:** Rule engines (deterministic) + Vector embeddings (connectionist) + LLMs (generative) working together. The best of all three AI paradigms.
-
----
-
 **Core Gen AI & Agentic AI Concepts Used:**
 
 ⚙️ Multi-Agent State Graph Orchestration (LangGraph)
+
 ⚙️ Hybrid RAG (Semantic Vector Search + Exact Regex Retrieval + Rule Engine)
+
 ⚙️ Dense Vector Embeddings (BERT / SentenceTransformers, 384-dim, ChromaDB)
+
 ⚙️ Multi-Modal AI (Audio Transcription + NLP + Signal Processing)
+
 ⚙️ Chain-of-Thought (CoT) Prompting & Zero-Shot Reasoning
+
 ⚙️ Conversational Memory & Grounded Citation
-⚙️ Deterministic AI Guardrails & Universal Validator
+
 ⚙️ Voice Stress Analysis (Pitch, RMS Energy, Speech Rate — librosa)
-⚙️ Multi-Provider Fallback & Resilience Engineering
+
 
 ---
 
