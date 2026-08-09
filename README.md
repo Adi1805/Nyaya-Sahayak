@@ -31,6 +31,7 @@ I built a slide-out chat assistant where officers can ask any legal question in 
 🔹 **Hybrid RAG:** The system first regex-scans the query for section numbers (e.g., "Section 304") and fetches exact metadata matches from ChromaDB. Then it augments those results with dense semantic vector search for broader context.
 🔹 **Conversational Memory:** Session history is maintained, allowing contextual follow-ups ("What about Section 127?").
 🔹 **Grounding & Citation:** Strict prompt engineering forces the model to cite exact BNS section numbers in every answer. No citation = no answer.
+<img width="595" height="912" alt="Nyaya Sahayak Demo2" src="https://github.com/user-attachments/assets/4f67e154-d478-4727-a608-47b9ccd25023" />
 
 ---
 
