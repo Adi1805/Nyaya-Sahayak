@@ -21,6 +21,8 @@ But here's what makes it different: between the Magistrate and the Clerk sits a 
 
 The result: **zero hallucinations in legal section mapping.**
 
+<img width="400" height="700" alt="Nyaya Sahayak Demo2" src="https://github.com/user-attachments/assets/4f67e154-d478-4727-a608-47b9ccd25023" />
+<img width="900" height="700" alt="Nyaya Sahayak Demo 1" src="https://github.com/user-attachments/assets/9f1b7b69-927c-4d8b-a426-cc9024ed0169" />
 ---
 
 **🤖 2. AI Legal Chatbot — RAG Conversational Agent**
@@ -31,8 +33,8 @@ I built a slide-out chat assistant where officers can ask any legal question in 
 🔹 **Hybrid RAG:** The system first regex-scans the query for section numbers (e.g., "Section 304") and fetches exact metadata matches from ChromaDB. Then it augments those results with dense semantic vector search for broader context.
 🔹 **Conversational Memory:** Session history is maintained, allowing contextual follow-ups ("What about Section 127?").
 🔹 **Grounding & Citation:** Strict prompt engineering forces the model to cite exact BNS section numbers in every answer. No citation = no answer.
-<img width="400" height="700" alt="Nyaya Sahayak Demo2" src="https://github.com/user-attachments/assets/4f67e154-d478-4727-a608-47b9ccd25023" />
-<img width="900" height="700" alt="Nyaya Sahayak Demo 1" src="https://github.com/user-attachments/assets/9f1b7b69-927c-4d8b-a426-cc9024ed0169" />
+
+<img width="594" height="867" alt="Nyaya Sahayak Demo4" src="https://github.com/user-attachments/assets/0978cec2-3599-4e0e-8782-ae110d64e97d" />
 
 ---
 
