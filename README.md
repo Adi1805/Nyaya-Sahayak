@@ -32,7 +32,7 @@ I built a slide-out chat assistant where officers can ask any legal question in 
 🔹 **Conversational Memory:** Session history is maintained, allowing contextual follow-ups ("What about Section 127?").
 🔹 **Grounding & Citation:** Strict prompt engineering forces the model to cite exact BNS section numbers in every answer. No citation = no answer.
 <img width="400" height="700" alt="Nyaya Sahayak Demo2" src="https://github.com/user-attachments/assets/4f67e154-d478-4727-a608-47b9ccd25023" />
-<img width="400" height="700" alt="Nyaya Sahayak Demo 1" src="https://github.com/user-attachments/assets/9f1b7b69-927c-4d8b-a426-cc9024ed0169" />
+<img width="900" height="700" alt="Nyaya Sahayak Demo 1" src="https://github.com/user-attachments/assets/9f1b7b69-927c-4d8b-a426-cc9024ed0169" />
 
 ---
 
