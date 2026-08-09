@@ -47,6 +47,10 @@ This is my favorite feature. It combines Speech Recognition, Digital Signal Proc
 🔹 **Contradiction Detection:** When multiple statements from the same witness are recorded over time, the system performs field-by-field comparison and flags inconsistencies — automatically detecting changing stories.
 
 🔹 **AI Interrogation Assistant (Chain-of-Thought Reasoning):** The agent analyzes the statement, identifies investigative gaps, and generates 6–8 strategic follow-up questions categorized by priority (CRITICAL / IMPORTANT / SUPPLEMENTARY) and type (Identification, Timeline, Evidence, Visibility, Escape Route, Corroboration). It even factors in the stress analysis results to probe areas of potential coercion.
+<img width="1907" height="923" alt="Nyaya Sahayak Demo5" src="https://github.com/user-attachments/assets/ffa97516-f3eb-4849-8e3d-fdf083f80af8" />
+<img width="1396" height="807" alt="Nyaya Sahayak Demo6" src="https://github.com/user-attachments/assets/9ccdd67c-417c-44e4-ad4f-7d252199d2c6" />
+<img width="1428" height="892" alt="Nyaya Sahayak Demo 7" src="https://github.com/user-attachments/assets/ac3f9188-d965-4de7-9be9-9e62b950ae18" />
+
 
 ---
 
