@@ -75,5 +75,5 @@ After the investigation, the system generates a prosecution-ready Charge-Sheet (
 
 Building this taught me that the future of Legal Tech isn't about throwing an LLM at a prompt. It's about building autonomous, goal-directed agents constrained by deterministic guardrails — systems that are accurate enough to be trusted by the people who enforce the law.
 
-Would love to connect with anyone building at the intersection of Agentic AI, Machine Learning, and Legal Tech.
+
 
