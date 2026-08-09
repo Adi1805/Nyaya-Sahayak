@@ -80,4 +80,3 @@ Building this taught me that the future of Legal Tech isn't about throwing an LL
 
 Would love to connect with anyone building at the intersection of Agentic AI, Machine Learning, and Legal Tech.
 
-**#AgenticAI #GenerativeAI #LegalTech #MachineLearning #BNS #Python #LangGraph #FastAPI #ChromaDB #BuildInPublic**
