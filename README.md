@@ -1,8 +1,8 @@
 # Nyaya Sahayak
 
+With India's transition from the legacy IPC to the new Bharatiya Nyaya Sanhita (BNS), law enforcement officers face a massive challenge remapping decades of muscle memory. I wanted to build an AI co-pilot for them, but there was a catch: when dealing with the law, LLM hallucinations are unacceptable.
 
-But I didn't want to build another ChatGPT wrapper. When it comes to law, a hallucinated penal code is unacceptable. So I engineered a system where deterministic rules override the LLM whenever it gets creative with the law.
-
+So, I bypassed standard wrappers and built a highly deterministic, Multi-Agent Orchestration system.
 Here's the full technical architecture:
 
 ---
